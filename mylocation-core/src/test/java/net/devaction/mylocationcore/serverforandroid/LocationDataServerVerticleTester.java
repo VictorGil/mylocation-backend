@@ -22,7 +22,7 @@ public class LocationDataServerVerticleTester{
         LocationData data = LocationDataUtilTester.constructTestLocationData();
         String dataString = LocationDataUtil.convertToJsonString(data);
         
-        String url = "http://192.168.0.101:8091/api/locationdata";
+        String url = "http://localhost:8091/api/locationdata";
         HttpSender.send(url, dataString);        
     }
 }
