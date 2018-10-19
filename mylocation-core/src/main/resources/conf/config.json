@@ -1,0 +1,10 @@
+{
+    "app_config": {
+        "location_data_http_port": 8091,
+        "location_data_end_point": "/api/locationdata",
+        "web_server_http_port": 8092,
+        "event_bus_multicast_address": "multicast",
+        "event_bus_bridge_http_port": 8093        
+    }
+}
+

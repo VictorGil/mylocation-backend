@@ -1,0 +1,50 @@
+package net.devaction.mylocationcore.serverforandroid;
+
+import org.apache.logging.log4j.Logger;
+
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.RoutingContext;
+import net.devaction.mylocationcore.main.MainVerticle;
+import net.devaction.mylocationcore.processors.LocationDataHandler;
+import net.devaction.mylocationcore.processors.LocationDataProcessor;
+import net.devaction.mylocationcore.processors.LocationDataResultHandler;
+
+import org.apache.logging.log4j.LogManager;
+
+/**
+ * @author Víctor Gil
+ * 
+ * since June 2018 
+ */
+public class LocationDataWebApiHandler implements Handler<RoutingContext>{
+    private static final Logger log = LogManager.getLogger(LocationDataWebApiHandler.class);
+    public static final int HTTP_OK_200 = 200;
+    
+    private final Vertx vertx;
+    private final LocationDataProcessor locationDataProcessor;
+    
+    public LocationDataWebApiHandler(Vertx vertx){        
+        this.vertx = vertx;
+        final String EVENT_BUS_MULTICAST_ADDRESS = MainVerticle.getAppConfig().getJsonObject("app_config").getString("event_bus_multicast_address");        
+        locationDataProcessor = new LocationDataProcessor(vertx.eventBus(), EVENT_BUS_MULTICAST_ADDRESS);
+    }
+    
+    @Override
+    public void handle(RoutingContext routingContext) {
+        
+        JsonObject locationDataJsonObject = routingContext.getBodyAsJson();
+        log.trace("Body of the http request received as JSON object: " + locationDataJsonObject);
+        
+        routingContext.response()
+        .setStatusCode(HTTP_OK_200)
+        .end();   
+        
+        LocationDataHandler handler = new LocationDataHandler(locationDataJsonObject, locationDataProcessor);
+        final boolean notOrdered = false;
+        LocationDataResultHandler resultHandler = new LocationDataResultHandler();
+        vertx.executeBlocking(handler, notOrdered, resultHandler);        
+    }
+}
+
