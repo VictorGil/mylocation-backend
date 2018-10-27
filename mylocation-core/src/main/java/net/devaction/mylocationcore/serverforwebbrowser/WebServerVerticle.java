@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.net.JksOptions;
 import io.vertx.ext.bridge.BridgeEventType;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
@@ -27,6 +29,12 @@ import org.apache.logging.log4j.LogManager;
 public class WebServerVerticle extends AbstractVerticle{
     private static final Logger log = LogManager.getLogger(WebServerVerticle.class);
     
+    private final String keyStorePassword;
+    
+    public WebServerVerticle(String keyStorePassword){
+        this.keyStorePassword = keyStorePassword;
+    }
+    
     @Override
     public void start(Future<Void> future){
         log.info("Starting " + WebServerVerticle.class.getSimpleName());
@@ -36,6 +44,7 @@ public class WebServerVerticle extends AbstractVerticle{
         
         Router webRouter = Router.router(vertx);
         final int HTTP_PORT = MainVerticle.getAppConfig().getJsonObject("app_config").getInteger("web_server_http_port");
+        final String KEY_STORE_FILE = MainVerticle.getAppConfig().getJsonObject("app_config").getString("web_server_keystore_file");
         
         String canonicalPath = null;
         try{
@@ -45,8 +54,14 @@ public class WebServerVerticle extends AbstractVerticle{
             log.error(ex, ex);
         }
         
+        HttpServerOptions secureOptions = new HttpServerOptions();
+        secureOptions.setKeyStoreOptions(new JksOptions().setPath(
+                //this file must be in the classpath
+                KEY_STORE_FILE)
+                .setPassword(keyStorePassword)).setSsl(true);
+        
         webRouter.route("/*").handler(StaticHandler.create("webroot").setCachingEnabled(false));        
-        vertx.createHttpServer().requestHandler(webRouter::accept)
+        vertx.createHttpServer(secureOptions).requestHandler(webRouter::accept)
         .listen(HTTP_PORT,
                 result -> {
                     if (result.succeeded()) {

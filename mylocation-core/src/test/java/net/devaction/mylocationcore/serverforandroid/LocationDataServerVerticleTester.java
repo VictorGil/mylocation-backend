@@ -23,6 +23,12 @@ public class LocationDataServerVerticleTester{
         String dataString = LocationDataUtil.convertToJsonString(data);
         
         String url = "http://localhost:8091/api/locationdata";
+        
+        try{
+            Thread.sleep(5000);
+        } catch(InterruptedException ex){
+            log.error(ex, ex);
+        }
         HttpSender.send(url, dataString);        
     }
 }

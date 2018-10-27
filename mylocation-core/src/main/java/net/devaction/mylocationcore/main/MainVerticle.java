@@ -8,6 +8,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle;
 import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
+import net.devaction.mylocationcore.util.DecryptedValuesProvider;
 
 /**
  * @author Víctor Gil
@@ -18,6 +19,7 @@ public class MainVerticle extends AbstractVerticle{
     private static final Logger log = LogManager.getLogger(MainVerticle.class);
 
     private static JsonObject appConfig;
+    private DecryptedValuesProvider decryptedValuesProvider;
     
     @Override
     public void start(){
@@ -37,6 +39,16 @@ public class MainVerticle extends AbstractVerticle{
                 MyLocationCoreMain.setVertx(vertx);
                 
                 deployLocationDataServerVerticle();
+                
+                String decryptPasswordEnvVarName = appConfig.getJsonObject("app_config").getString("decrypt_password_env_var_name");
+                String decryptPassword = System.getenv(decryptPasswordEnvVarName);
+                if (decryptPassword == null || decryptPassword.length() == 0) {
+                    String errMsg = "The decryption password cannot be null nor empty";
+                    log.fatal(errMsg);
+                    log.info("Terminating application");
+                    System.exit(1);
+                }
+                decryptedValuesProvider = new DecryptedValuesProvider(decryptPassword);
                 deployWebServerVerticle();
             }
           });     
@@ -59,7 +71,11 @@ public class MainVerticle extends AbstractVerticle{
 
     public void deployWebServerVerticle(){
         log.info("Going to deploy " + WebServerVerticle.class.getSimpleName());
-        vertx.deployVerticle(new WebServerVerticle(), asyncResult -> {
+        
+        String keyStorePasswordEncrypted = appConfig.getJsonObject("app_config").getString("keystore_password_encrypted");
+        String keyStorePassword = decryptedValuesProvider.decrypt(keyStorePasswordEncrypted);
+        
+        vertx.deployVerticle(new WebServerVerticle(keyStorePassword), asyncResult -> {
             if (asyncResult.succeeded()) {
                 log.info("Successfully deployed " +  
                         WebServerVerticle.class.getSimpleName() + ". Result: " + asyncResult.result());
