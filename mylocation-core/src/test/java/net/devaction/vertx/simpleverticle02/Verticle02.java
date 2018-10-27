@@ -3,7 +3,6 @@ package net.devaction.vertx.simpleverticle02;
 import org.apache.logging.log4j.Logger;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
 
 import org.apache.logging.log4j.LogManager;
 

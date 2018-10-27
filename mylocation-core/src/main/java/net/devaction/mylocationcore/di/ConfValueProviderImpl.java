@@ -18,12 +18,6 @@ public class ConfValueProviderImpl implements ConfValueProvider{
 
     @Override
     public String getString(String key) {
-        if (appConfig == null){
-            String errorMessage = "The appConfig JsonObject is null";
-            log.fatal(errorMessage);
-            throw new RuntimeException(errorMessage);
-        }
-        log.debug("appConfig: " + appConfig);
         return appConfig.getString(key);
     }
 
@@ -43,7 +37,6 @@ public class ConfValueProviderImpl implements ConfValueProvider{
     }
 
     public static void setAppConfig(JsonObject appConfigParam){
-        log.debug("appConfig: " + appConfigParam);
         appConfig = appConfigParam;
     }        
 }

@@ -16,7 +16,6 @@ import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 import net.devaction.mylocationcore.di.ConfValueProvider;
-import net.devaction.mylocationcore.main.MainVerticle;
 import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
 import java.io.File;
@@ -40,11 +39,6 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     private Integer httpPort;
     private String eventBusMulticastAddress;
     private Integer eventBusBridgeHttpPort;
-    
-    //public WebServerVerticle(String keyStorePassword){
-    //    this.keyStorePassword = keyStorePassword;
-    //}
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -74,8 +68,6 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         configureSockJSBridge();
         
         Router webRouter = Router.router(vertx);
-        //final int httpPort = MainVerticle.getAppConfig().getJsonObject("app_config").getInteger("web_server_http_port");
-        //final String keyStoreFile = MainVerticle.getAppConfig().getJsonObject("app_config").getString("web_server_keystore_file");
         
         String canonicalPath = null;
         try{
@@ -149,27 +141,27 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         this.decryptedValueProvider = decryptedValueProvider;
     }
 
-    //it may be useful for testing
+    //it may be useful for testing, it is not called by Spring
     public void setKeyStorePassword(String keyStorePassword) {
         this.keyStorePassword = keyStorePassword;
     }
 
-    //it may be useful for testing
+    //it may be useful for testing, it is not called by Spring
     public void setKeyStoreFile(String keyStoreFile) {
         this.keyStoreFile = keyStoreFile;
     }
 
-    //it may be useful for testing
+    //it may be useful for testing, it is not called by Spring
     public void setHttpPort(Integer httpPort) {
         this.httpPort = httpPort;
     }
 
-    //it may be useful for testing
+    //it may be useful for testing, it is not called by Spring
     public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
 
-    //it may be useful for testing
+    //it may be useful for testing, it is not called by Spring
     public void setEventBusBridgeHttpPort(Integer eventBusBridgeHttpPort) {
         this.eventBusBridgeHttpPort = eventBusBridgeHttpPort;
     }

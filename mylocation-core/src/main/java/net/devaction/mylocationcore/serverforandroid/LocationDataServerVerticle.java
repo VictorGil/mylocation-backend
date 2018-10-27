@@ -45,11 +45,8 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
         
         addEventBusMessageConsumer();
         
-        Router router = Router.router(vertx);
-        
+        Router router = Router.router(vertx);        
 
-        //final String LOCATION_DATA_END_POINT = 
-        //        MainVerticle.getAppConfig().getJsonObject("app_config").getString("location_data_end_point");
         log.info("End point for the location data: " + endPoint);
         router.route(endPoint)
         
@@ -62,13 +59,11 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
         
         log.info("Added new route " + endPoint + " to the HTTP server, POST method");
         
-        //httpPort = MainVerticle.getAppConfig().getJsonObject("app_config").getInteger("location_data_http_port");
         log.info("TCP port for the HTTP server to listen for location data requests: " + httpPort);
         createHttpServer(router, future, httpPort);
     }
 
     void addEventBusMessageConsumer(){
-        //final String eventBusMulticastAddress = MainVerticle.getAppConfig().getJsonObject("app_config").getString("event_bus_multicast_address");
         MessageConsumer<String> consumer = vertx.eventBus().consumer(eventBusMulticastAddress);
         log.info("Going to listen for messages on the event bus, the multicast address is \"" + eventBusMulticastAddress + "\"");
         consumer.handler(message -> {
@@ -102,24 +97,25 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     public void setConfValueProvider(ConfValueProvider confValueProvider) {
         this.confValueProvider = confValueProvider;
     }
-
-    //it may be useful when testing
+    
+    //to be called by Spring    
+    public void setHandler(LocationDataWebApiHandler handler) {
+        this.handler = handler;
+    }
+    
+    //it may be useful when testing, it is not called by Spring
     public void setEndPoint(String endPoint) {
         this.endPoint = endPoint;
     }
 
-    //it may be useful when testing
+    //it may be useful when testing, it is not called by Spring
     public void setHttpPort(Integer httpPort) {
         this.httpPort = httpPort;
     }
 
-    //it may be useful when testing
+    //it may be useful when testing, it is not called by Spring
     public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
-    }
-
-    public void setHandler(LocationDataWebApiHandler handler) {
-        this.handler = handler;
     }
 }
 

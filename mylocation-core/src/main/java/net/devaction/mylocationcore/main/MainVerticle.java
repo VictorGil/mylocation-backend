@@ -10,7 +10,6 @@ import net.devaction.mylocationcore.di.ConfValueProviderImpl;
 import net.devaction.mylocationcore.di.VertxProviderImpl;
 import net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle;
 import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
-import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -22,9 +21,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MainVerticle extends AbstractVerticle{
     private static final Logger log = LogManager.getLogger(MainVerticle.class);
-
-    //private static JsonObject appConfig;
-    //private DecryptedValueProvider decryptedValuesProvider;
     private JsonObject vertxConfig;
     
     @Override
@@ -54,19 +50,6 @@ public class MainVerticle extends AbstractVerticle{
                 MyLocationCoreMain.setVertx(vertx);
                 
                 deployLocationDataServerVerticle(verticleBeans.getLocationDataServerVerticle());
-                
-                /*
-                String decryptPasswordEnvVarName = appConfig.getJsonObject("app_config").getString("decrypt_password_env_var_name");
-                String decryptPassword = System.getenv(decryptPasswordEnvVarName);
-                if (decryptPassword == null || decryptPassword.length() == 0) {
-                    String errMsg = "The decryption password cannot be null nor empty";
-                    log.fatal(errMsg);
-                    vertx.close(closeHandler -> {
-                        log.info("Vert.x has been closed");
-                    });
-                    return;
-                }*/
-                //decryptedValuesProvider = new DecryptedValueProvider(decryptPassword);
                 deployWebServerVerticle(verticleBeans.getWebServerVerticle());
             }
         });     
@@ -89,9 +72,6 @@ public class MainVerticle extends AbstractVerticle{
 
     public void deployWebServerVerticle(WebServerVerticle webServerVerticle){
         log.info("Going to deploy " + WebServerVerticle.class.getSimpleName());
-        
-        //String keyStorePasswordEncrypted = appConfig.getJsonObject("app_config").getString("keystore_password_encrypted");
-        //String keyStorePassword = decryptedValuesProvider.decrypt(keyStorePasswordEncrypted);
         
         vertx.deployVerticle(webServerVerticle, asyncResult -> {
             if (asyncResult.succeeded()) {

@@ -14,11 +14,11 @@
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <maven.eclipse.plugin.version>2.10</maven.eclipse.plugin.version>
         <maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
+        <!-- we need to use Java 7 because of Android -->
         <java.version>1.7</java.version>
     </properties>
 
     <dependencies>
-        <!-- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -74,5 +74,4 @@
         </pluginManagement>    
     </build>      
 </project>
-
 
