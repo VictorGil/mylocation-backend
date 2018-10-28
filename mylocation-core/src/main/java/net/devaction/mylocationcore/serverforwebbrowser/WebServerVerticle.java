@@ -5,7 +5,6 @@ import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.bridge.BridgeEventType;
@@ -38,7 +37,8 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     private String keyStoreFile;
     private Integer httpPort;
     private String eventBusMulticastAddress;
-    private Integer eventBusBridgeHttpPort;
+    
+    private final HttpServerOptions secureOptions = new HttpServerOptions();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -56,17 +56,16 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         if (eventBusMulticastAddress == null)
             eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address");
         
-        if (eventBusBridgeHttpPort == null)
-            eventBusBridgeHttpPort = confValueProvider.getInteger("event_bus_bridge_http_port");        
+        secureOptions.setKeyStoreOptions(new JksOptions().setPath(
+                //this file must be in the classpath
+                keyStoreFile)
+                .setPassword(keyStorePassword)).setSsl(true);
     }
     
     @Override
     public void start(Future<Void> future){
         log.info("Starting " + WebServerVerticle.class.getSimpleName());
 
-        log.info("Going to configure the SockJS bridge on the event bus");
-        configureSockJSBridge();
-        
         Router webRouter = Router.router(vertx);
         
         String canonicalPath = null;
@@ -75,15 +74,11 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
             log.info("Canonical path: " + canonicalPath);
         } catch(IOException ex){
             log.error(ex, ex);
-        }
+        }        
+       
+        webRouter.route("/eventbusbridge/*").handler(createSockJSBridgeHandler());
+        webRouter.route("/*").handler(StaticHandler.create("webroot").setCachingEnabled(false));
         
-        HttpServerOptions secureOptions = new HttpServerOptions();
-        secureOptions.setKeyStoreOptions(new JksOptions().setPath(
-                //this file must be in the classpath
-                keyStoreFile)
-                .setPassword(keyStorePassword)).setSsl(true);
-        
-        webRouter.route("/*").handler(StaticHandler.create("webroot").setCachingEnabled(false));        
         vertx.createHttpServer(secureOptions).requestHandler(webRouter::accept)
         .listen(httpPort,
                 result -> {
@@ -98,15 +93,14 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         );                 
     }
 
-    void configureSockJSBridge(){
+    SockJSHandler createSockJSBridgeHandler(){
         SockJSHandlerOptions handlerOptions = new SockJSHandlerOptions().setHeartbeatInterval(5000);
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx, handlerOptions);
                 
-        //final String eventBusMulticastAddress = MainVerticle.getAppConfig().getJsonObject("app_config").getString("event_bus_multicast_address");
         BridgeOptions bridgeOptions = new BridgeOptions()
                 .addOutboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
                 .addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress));
-        
+
         sockJSHandler.bridge(bridgeOptions, event -> {
             if (event.type() == BridgeEventType.SOCKET_CREATED)
                 log.info("A socket was created.");
@@ -117,14 +111,8 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
             event.complete(true);
         });
         
-        final Router router = Router.router(vertx);
-        //The "*" character is important 
-        router.route("/eventbusbridge/*").handler(sockJSHandler);
-        final HttpServer httpServer = vertx.createHttpServer();
-        
-        //final int eventBusBridgeHttpPort = MainVerticle.getAppConfig().getJsonObject("app_config").getInteger("event_bus_bridge_http_port");
-        httpServer.requestHandler(router::accept).listen(eventBusBridgeHttpPort);
-    }
+        return sockJSHandler;
+    }    
     
     @Override
     public void stop(){
@@ -159,11 +147,6 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     //it may be useful for testing, it is not called by Spring
     public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
-    }
-
-    //it may be useful for testing, it is not called by Spring
-    public void setEventBusBridgeHttpPort(Integer eventBusBridgeHttpPort) {
-        this.eventBusBridgeHttpPort = eventBusBridgeHttpPort;
     }
 }
 

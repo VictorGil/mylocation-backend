@@ -6,8 +6,7 @@
         "web_server_keystore_file": "mylocationkeystore01.jks",
         "decrypt_password_env_var_name": "DECRYPT_PW",
         "keystore_password_encrypted": "c4dwwdUZBH1KDiJkFsXNbdYmuGbnuf0D",
-        "event_bus_multicast_address": "multicast",
-        "event_bus_bridge_http_port": 8093       
+        "event_bus_multicast_address": "multicast"
     }
 }
 
