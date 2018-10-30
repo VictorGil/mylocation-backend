@@ -6,9 +6,12 @@ import org.springframework.beans.factory.InitializingBean;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import net.devaction.mylocationcore.di.ConfValueProvider;
+import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -21,9 +24,14 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     private static final Logger log = LogManager.getLogger(LocationDataServerVerticle.class);
  
     private ConfValueProvider confValueProvider;    
+    private DecryptedValueProvider decryptedValueProvider;
+    
     private String endPoint; 
     private Integer httpPort;    
     private String eventBusMulticastAddress;
+    
+    private String keyStorePassword;
+    private String keyStoreFile;
     
     private LocationDataWebApiHandler handler;
 
@@ -37,6 +45,14 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
         
         if (eventBusMulticastAddress == null)
             eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address"); 
+        
+        if (keyStorePassword == null){
+            String keyStorePasswordEncrypted = confValueProvider.getString("keystore_password_encrypted");
+            keyStorePassword = decryptedValueProvider.decrypt(keyStorePasswordEncrypted);
+        }
+                
+        if (keyStoreFile == null)
+            keyStoreFile = confValueProvider.getString("web_server_keystore_file");
     }
     
     @Override
@@ -73,7 +89,7 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     
     private void createHttpServer(Router router, Future<Void> future, int port){
         // Create the HTTP server and pass the "accept" method to the request handler.
-        vertx.createHttpServer()
+        vertx.createHttpServer(createHttpsOptions())
             .requestHandler(router::accept)
             .listen(port,
                 result -> {
@@ -86,6 +102,14 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
                     }
                 }
         );    
+    }
+    
+    private HttpServerOptions createHttpsOptions(){
+        HttpServerOptions secureOptions = new HttpServerOptions().setSsl(true);
+        JksOptions jksOptions = new JksOptions().setPath(keyStoreFile).setPassword(keyStorePassword);
+        secureOptions.setKeyStoreOptions(jksOptions);
+        secureOptions.setTrustOptions(jksOptions);        
+        return secureOptions;
     }
     
     @Override
@@ -116,6 +140,21 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     //it may be useful when testing, it is not called by Spring
     public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
+    }
+    
+    //it may be useful for testing, it is not called by Spring
+    public void setKeyStorePassword(String keyStorePassword) {
+        this.keyStorePassword = keyStorePassword;
+    }
+
+    //to be called by Spring
+    public void setDecryptedValueProvider(DecryptedValueProvider decryptedValueProvider) {
+        this.decryptedValueProvider = decryptedValueProvider;
+    }
+    
+    //it may be useful for testing, it is not called by Spring
+    public void setKeyStoreFile(String keyStoreFile) {
+        this.keyStoreFile = keyStoreFile;
     }
 }
 

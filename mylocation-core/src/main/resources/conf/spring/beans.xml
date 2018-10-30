@@ -16,6 +16,7 @@
             class="net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle">
         <property name="confValueProvider" ref="confValueProvider"/>
         <property name="handler" ref="locationDataWebApiHandler"/>
+        <property name="decryptedValueProvider" ref="decryptedValueProvider"/>   
     </bean>
     
     <bean id="locationDataWebApiHandler" class="net.devaction.mylocationcore.serverforandroid.LocationDataWebApiHandler">
