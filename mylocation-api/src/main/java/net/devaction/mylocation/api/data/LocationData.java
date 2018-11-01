@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties({"timeCheckedString", "timeMeasuredString"})
 public class LocationData{
     public static final String NA = "N/A";
+    public static final String MASKED = "MASKED";
     
     //in degrees ("[+-]DDD.DDDDD")
     @JsonProperty  
