@@ -59,6 +59,7 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     public void start(Future<Void> future){        
         log.info("Starting " + LocationDataServerVerticle.class.getSimpleName());
         
+        //this is just for logging purposes
         addEventBusMessageConsumer();
         
         Router router = Router.router(vertx);        
@@ -79,6 +80,7 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
         createHttpServer(router, future, httpPort);
     }
 
+    //this is just for logging purposes
     void addEventBusMessageConsumer(){
         MessageConsumer<String> consumer = vertx.eventBus().consumer(eventBusMulticastAddress);
         log.info("Going to listen for messages on the event bus, the multicast address is \"" + eventBusMulticastAddress + "\"");
