@@ -1,12 +1,14 @@
 {
-    "app_config": {
+    "core_service_config": {
         "location_data_http_port": 8091,
         "location_data_end_point": "/api/locationdata",
         "web_server_http_port": 8092,
         "web_server_keystore_file": "mylocationkeystore01.jks",
         "decrypt_password_env_var_name": "DECRYPT_PW",
         "keystore_password_encrypted": "c4dwwdUZBH1KDiJkFsXNbdYmuGbnuf0D",
-        "event_bus_multicast_address": "multicast"
+        "event_bus_multicast_address": "multicast",
+        "event_bus_persist_address" : "last_known_location_persist",
+        "event_bus_last_known_location_address" : "last_known_location_request"
     }
 }
 

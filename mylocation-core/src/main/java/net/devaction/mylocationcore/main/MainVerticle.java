@@ -23,6 +23,8 @@ public class MainVerticle extends AbstractVerticle{
     private static final Logger log = LogManager.getLogger(MainVerticle.class);
     private JsonObject vertxConfig;
     
+    private static final String CORE_SERVICE_CONFIG = "core_service_config";
+    
     @Override
     public void start(){
         log.info("Starting " + this.getClass().getSimpleName());        
@@ -39,7 +41,7 @@ public class MainVerticle extends AbstractVerticle{
                 log.info("Retrieved configuration: " + vertxConfig);
                 
                 //This is a workaround, kind of
-                ConfValueProviderImpl.setAppConfig(vertxConfig.getJsonObject("app_config"));                
+                ConfValueProviderImpl.setAppConfig(vertxConfig.getJsonObject(CORE_SERVICE_CONFIG));                
                 VertxProviderImpl.setVertx(vertx);
                 
                 ApplicationContext appContext = new ClassPathXmlApplicationContext("conf/spring/beans.xml");
