@@ -15,7 +15,7 @@
         <maven.eclipse.plugin.version>2.10</maven.eclipse.plugin.version>
         <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
         <java.version>1.8</java.version>
-        <vertx.version>3.5.4</vertx.version>
+        <vertx.version>3.6.2</vertx.version>
         <spring.version>4.3.19.RELEASE</spring.version>
     </properties>
 
@@ -37,7 +37,11 @@
             <artifactId>vertx-config</artifactId>
             <version>${vertx.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-hazelcast</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>        
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
