@@ -20,21 +20,20 @@ public class MyLocationCoreMain implements sun.misc.SignalHandler{
     private static boolean isVertxClosed = false;  
     
     public static void main(String[] args){
-        log.info("Starting application");        
-        Launcher.executeCommand("run", MainVerticle.class.getName());   
-
         new MyLocationCoreMain().run();        
     }
 
     private MyLocationCoreMain(){}
     
     private void run(){
+        log.info("Starting application");        
+        Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster");   
         registerThisAsOsSignalHandler();
     }
     
     //the MainVerticle will call this method for this class to be able to close Vert.x gracefully
     public static void setVertx(Vertx vertxArg){
-       vertx = vertxArg;
+        vertx = vertxArg;
     }
 
     public static Vertx getVertx(){
