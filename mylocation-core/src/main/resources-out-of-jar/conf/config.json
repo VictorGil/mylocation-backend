@@ -7,8 +7,8 @@
         "decrypt_password_env_var_name": "DECRYPT_PW",
         "keystore_password_encrypted": "c4dwwdUZBH1KDiJkFsXNbdYmuGbnuf0D",
         "event_bus_multicast_address": "multicast",
-        "event_bus_persist_address" : "last_known_location_persist",
-        "event_bus_last_known_location_address" : "last_known_location_request"
+        "event_bus_last_known_location_address": "last_known_location_request",
+        "event_bus_location_persist_address": "last_known_location_persist"
     }
 }
 
