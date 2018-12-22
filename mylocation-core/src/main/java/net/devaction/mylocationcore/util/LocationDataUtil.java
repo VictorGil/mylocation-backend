@@ -1,11 +1,10 @@
 package net.devaction.mylocationcore.util;
 
-import org.apache.logging.log4j.Logger;
-
 import io.vertx.core.json.JsonObject;
 import net.devaction.mylocation.api.data.LocationData;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -14,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
  */
 public class LocationDataUtil{
 
-private static final Logger log = LogManager.getLogger(LocationDataUtil.class);
+private static final Logger log = LoggerFactory.getLogger(LocationDataUtil.class);
 
     public static LocationData constructObject(String locationDataJsonString){
         log.trace("Going to create a LocationData object from this JSON String: " + locationDataJsonString);

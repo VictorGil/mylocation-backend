@@ -1,7 +1,7 @@
 package net.devaction.mylocationcore.di;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.json.JsonObject;
 
@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
  */
 //We consciously avoid a method to retrieve a float configuration value 
 public class ConfValueProviderImpl implements ConfValueProvider{
-    private static final Logger log = LogManager.getLogger(ConfValueProviderImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ConfValueProviderImpl.class);
 
     private static JsonObject appConfig;
 

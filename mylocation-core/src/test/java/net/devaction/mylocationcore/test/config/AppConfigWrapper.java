@@ -1,7 +1,7 @@
 package net.devaction.mylocationcore.test.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * since November 2018
  */
 public class AppConfigWrapper {
-    private static final Logger log = LogManager.getLogger(AppConfigWrapper.class);
+    private static final Logger log = LoggerFactory.getLogger(AppConfigWrapper.class);
     
     @JsonProperty("app_config")
     private AppConfig appConfig;

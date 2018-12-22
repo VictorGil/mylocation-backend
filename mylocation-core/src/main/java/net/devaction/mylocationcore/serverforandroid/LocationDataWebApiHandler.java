@@ -1,6 +1,5 @@
 package net.devaction.mylocationcore.serverforandroid;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.Handler;
@@ -12,7 +11,8 @@ import net.devaction.mylocationcore.processors.LocationDataHandler;
 import net.devaction.mylocationcore.processors.LocationDataProcessor;
 import net.devaction.mylocationcore.processors.LocationDataResultHandler;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -20,7 +20,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class LocationDataWebApiHandler implements Handler<RoutingContext>, InitializingBean{
-    private static final Logger log = LogManager.getLogger(LocationDataWebApiHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationDataWebApiHandler.class);
     public static final int HTTP_OK_200 = 200;
     
     private Vertx vertx;

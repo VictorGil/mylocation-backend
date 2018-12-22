@@ -1,12 +1,11 @@
 package net.devaction.vertx;
 
-import org.apache.logging.log4j.Logger;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -16,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 public class SomeMoney implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = LogManager.getLogger(SomeMoney.class);
+    private static final Logger log = LoggerFactory.getLogger(SomeMoney.class);
     
     @JsonProperty   
     private long amount;

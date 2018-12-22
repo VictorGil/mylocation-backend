@@ -1,6 +1,8 @@
 package net.devaction.mylocationcore.serverforandroid;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.AbstractVerticle;
@@ -13,15 +15,13 @@ import io.vertx.ext.web.handler.BodyHandler;
 import net.devaction.mylocationcore.di.ConfValueProvider;
 import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
-import org.apache.logging.log4j.LogManager;
-
 /**
  * @author Víctor Gil
  * 
  * since June 2018 
  */
 public class LocationDataServerVerticle extends AbstractVerticle implements InitializingBean{
-    private static final Logger log = LogManager.getLogger(LocationDataServerVerticle.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationDataServerVerticle.class);
  
     private ConfValueProvider confValueProvider;    
     private DecryptedValueProvider decryptedValueProvider;

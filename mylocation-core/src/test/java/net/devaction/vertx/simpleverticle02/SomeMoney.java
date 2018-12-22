@@ -1,7 +1,8 @@
 package net.devaction.vertx.simpleverticle02;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonObject;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 public class SomeMoney implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = LogManager.getLogger(SomeMoney.class);
+    private static final Logger log = LoggerFactory.getLogger(SomeMoney.class);
     
     @JsonProperty   
     private long amount;

@@ -1,11 +1,10 @@
 package net.devaction.mylocationcore.processors;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.devaction.mylocation.api.data.LocationData;
 import net.devaction.mylocationcore.sharedenums.Result;
-
-import org.apache.logging.log4j.LogManager;
 
 /**
  * @author Víctor Gil
@@ -13,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class LocationDataProcessingResult{
-    private static final Logger log = LogManager.getLogger(LocationDataProcessingResult.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationDataProcessingResult.class);
     
     private final Result result;    
     private final LocationData locationData;

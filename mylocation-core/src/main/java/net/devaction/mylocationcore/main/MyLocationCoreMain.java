@@ -1,12 +1,11 @@
 package net.devaction.mylocationcore.main;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 import sun.misc.Signal;
-
-import org.apache.logging.log4j.LogManager;
 
 /**
  * @author Víctor Gil 
@@ -14,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
  */
 @SuppressWarnings("restriction")
 public class MyLocationCoreMain implements sun.misc.SignalHandler{
-    private static final Logger log = LogManager.getLogger(MyLocationCoreMain.class);
+    private static final Logger log = LoggerFactory.getLogger(MyLocationCoreMain.class);
     public  static Vertx vertx;
     private static final String WINCH_SIGNAL = "WINCH";
     private static boolean isVertxClosed = false;  
@@ -47,7 +46,7 @@ public class MyLocationCoreMain implements sun.misc.SignalHandler{
         } catch(IllegalArgumentException ex){
             // Most likely this is a signal that's not supported on this
             // platform or with the JVM as it is currently configured
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
         } catch(Throwable th){
             // We may have a serious problem, including missing classes
             // or changed APIs
@@ -79,7 +78,7 @@ public class MyLocationCoreMain implements sun.misc.SignalHandler{
                 Thread.sleep(100);
                 i++;
             } catch(InterruptedException ex){
-                log.error(ex, ex);
+                log.error(ex.toString(), ex);
             }
         }        
         if (isVertxClosed){

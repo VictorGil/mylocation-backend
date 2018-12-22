@@ -1,12 +1,11 @@
 package net.devaction.vertx.simpleverticle02;
 
-import org.apache.logging.log4j.Logger;
-
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -14,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class MoneyMessageReceivedHandler implements Handler<Message<JsonObject>>{
-    private static final Logger log = LogManager.getLogger(MoneyMessageReceivedHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(MoneyMessageReceivedHandler.class);
     
    @Override
     public void handle(Message<JsonObject> message) {

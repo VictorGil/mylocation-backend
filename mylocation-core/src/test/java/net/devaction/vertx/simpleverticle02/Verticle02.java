@@ -1,10 +1,9 @@
 package net.devaction.vertx.simpleverticle02;
 
-import org.apache.logging.log4j.Logger;
-
 import io.vertx.core.AbstractVerticle;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -12,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class Verticle02 extends AbstractVerticle{
-    private static final Logger log = LogManager.getLogger(Verticle02.class);
+    private static final Logger log = LoggerFactory.getLogger(Verticle02.class);
     
     static final String money = "money";
     
@@ -22,7 +21,7 @@ public class Verticle02 extends AbstractVerticle{
         try{
             super.start();
         } catch(Exception ex){
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
             throw new RuntimeException(ex);
         }
 

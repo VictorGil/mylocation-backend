@@ -1,6 +1,5 @@
 package net.devaction.mylocationcore.serverforwebbrowser;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.AbstractVerticle;
@@ -20,7 +19,8 @@ import net.devaction.mylocationcore.util.DecryptedValueProvider;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -28,7 +28,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class WebServerVerticle extends AbstractVerticle implements InitializingBean{
-    private static final Logger log = LogManager.getLogger(WebServerVerticle.class);
+    private static final Logger log = LoggerFactory.getLogger(WebServerVerticle.class);
     
     private ConfValueProvider confValueProvider; 
     private DecryptedValueProvider decryptedValueProvider;
@@ -73,7 +73,7 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
             canonicalPath = new File("").getCanonicalPath();
             log.info("Canonical path: " + canonicalPath);
         } catch(IOException ex){
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
         }        
        
         webRouter.route("/eventbusbridge/*").handler(createSockJSBridgeHandler());

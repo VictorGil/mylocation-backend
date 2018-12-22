@@ -1,7 +1,7 @@
 package net.devaction.mylocationcore.main;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
@@ -20,7 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * since June 2018 
  */
 public class MainVerticle extends AbstractVerticle{
-    private static final Logger log = LogManager.getLogger(MainVerticle.class);
+    private static final Logger log = LoggerFactory.getLogger(MainVerticle.class);
     private JsonObject vertxConfig;
     
     private static final String CORE_SERVICE_CONFIG = "core_service_config";
@@ -32,7 +32,7 @@ public class MainVerticle extends AbstractVerticle{
         ConfigRetriever retriever = ConfigRetriever.create(vertx);
         retriever.getConfig(asyncResult -> {
             if (asyncResult.failed()) {
-                log.fatal("Failed to retrieve configuration: " + asyncResult.cause(), asyncResult.cause());
+                log.error("FATAL: Failed to retrieve configuration: " + asyncResult.cause(), asyncResult.cause());
                 vertx.close(closeHandler -> {
                     log.info("Vert.x has been closed");
                 });

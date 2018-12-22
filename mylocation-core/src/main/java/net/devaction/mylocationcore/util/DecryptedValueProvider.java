@@ -1,7 +1,8 @@
 package net.devaction.mylocationcore.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimplePBEConfig;
 import org.springframework.beans.factory.InitializingBean;
@@ -13,7 +14,7 @@ import net.devaction.mylocationcore.di.ConfValueProvider;
  * since October 2018
  */
 public class DecryptedValueProvider implements InitializingBean{
-    private static final Logger log = LogManager.getLogger(DecryptedValueProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(DecryptedValueProvider.class);
 
     private final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
     
@@ -33,8 +34,8 @@ public class DecryptedValueProvider implements InitializingBean{
             
             encryptionPassword = System.getenv(decryptPasswordEnvVarName);
             if (encryptionPassword == null || encryptionPassword.length() == 0) {
-                String errMsg = "The decryption/encryption password cannot be null nor empty";
-                log.fatal(errMsg);
+                String errMsg = "FATAL: The decryption/encryption password cannot be null nor empty";
+                log.error(errMsg);
                 throw new RuntimeException(errMsg);
             }            
         }

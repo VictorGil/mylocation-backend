@@ -1,7 +1,7 @@
 package net.devaction.httptest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import javax.net.ssl.TrustManagerFactory;
  * 
  */
 public class SslSocketFactoryCreator{
-    private static final Logger log = LogManager.getLogger(SslSocketFactoryCreator.class);
+    private static final Logger log = LoggerFactory.getLogger(SslSocketFactoryCreator.class);
     
     public SSLSocketFactory create(String keyStoreFile, String keyStorePassword){
         
@@ -54,7 +54,7 @@ public class SslSocketFactoryCreator{
 
             sSLSocketFactory = sslContext.getSocketFactory();
         } catch (Exception ex) {
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
             throw new RuntimeException(ex);
         } finally {
             if (keyStoreInputStream != null)

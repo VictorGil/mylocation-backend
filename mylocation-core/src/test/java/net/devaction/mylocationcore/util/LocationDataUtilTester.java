@@ -1,12 +1,11 @@
 package net.devaction.mylocationcore.util;
 
-import org.apache.logging.log4j.Logger;
-
 import net.devaction.mylocation.api.data.LocationData;
 
 import java.util.Date;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -14,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class LocationDataUtilTester{
-    private static final Logger log = LogManager.getLogger(LocationDataUtilTester.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationDataUtilTester.class);
     
     public static void main(String[] args){
         LocationData locationData = constructTestLocationData();

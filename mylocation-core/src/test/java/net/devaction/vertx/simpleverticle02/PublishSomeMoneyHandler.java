@@ -1,11 +1,10 @@
 package net.devaction.vertx.simpleverticle02;
 
-import org.apache.logging.log4j.Logger;
-
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -13,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class PublishSomeMoneyHandler implements Handler<Long>{
-    private static final Logger log = LogManager.getLogger(PublishSomeMoneyHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(PublishSomeMoneyHandler.class);
     
     private final int amount;
     private Vertx vertx;

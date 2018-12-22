@@ -1,7 +1,7 @@
 package net.devaction.mylocationcore.test.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
  * since November 2018
  */
 public class AppConfigProviderTester {
-    private static final Logger log = LogManager.getLogger(AppConfigProviderTester.class);
+    private static final Logger log = LoggerFactory.getLogger(AppConfigProviderTester.class);
     
     public static void main(String[] arguments){
         new AppConfigProviderTester().run();

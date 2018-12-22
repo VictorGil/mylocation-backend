@@ -1,6 +1,8 @@
 package net.devaction.mylocationcore.processors;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.eventbus.EventBus;
@@ -10,7 +12,6 @@ import net.devaction.mylocationcore.di.VertxProvider;
 import net.devaction.mylocationcore.sharedenums.Result;
 import net.devaction.mylocationcore.util.LocationDataUtil;
 
-import org.apache.logging.log4j.LogManager;
 
 /**
  * @author Víctor Gil
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class LocationDataProcessor implements InitializingBean{
-    private static final Logger log = LogManager.getLogger(LocationDataProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LocationDataProcessor.class);
     
     private EventBus eventBus;
     private VertxProvider vertxProvider;

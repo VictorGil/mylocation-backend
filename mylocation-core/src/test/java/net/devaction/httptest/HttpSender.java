@@ -1,7 +1,5 @@
 package net.devaction.httptest;
 
-import org.apache.logging.log4j.Logger;
-
 import net.devaction.mylocationcore.test.config.AppConfigProvider;
 import net.devaction.mylocationcore.util.DecryptedValueProvider;
 import okhttp3.MediaType;
@@ -16,7 +14,8 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Víctor Gil
@@ -24,7 +23,7 @@ import org.apache.logging.log4j.LogManager;
  * since June 2018 
  */
 public class HttpSender{
-    private static final Logger log = LogManager.getLogger(HttpSender.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpSender.class);
 
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
      
@@ -55,7 +54,7 @@ public class HttpSender{
             response = client.newCall(request).execute();
             log.info("HTTP Response received: " + response.body().string());
         } catch(IOException ex){
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
         }
         log.info("Response: " + response);
     }
@@ -75,8 +74,8 @@ public class HttpSender{
         
         final String encryptionPassword = System.getenv(decryptPasswordEnvVarName);
         if (encryptionPassword == null || encryptionPassword.length() == 0) {
-            String errMsg = "The decryption/encryption password cannot be null nor empty";
-            log.fatal(errMsg);
+            String errMsg = "FATAL: The decryption/encryption password cannot be null nor empty";
+            log.error(errMsg);
             throw new RuntimeException(errMsg);
         }  
         
@@ -90,7 +89,7 @@ public class HttpSender{
         try{
             decryptedValueProvider.afterPropertiesSet();
         } catch(Exception ex){
-            log.error(ex, ex);
+            log.error(ex.toString(), ex);
             throw new RuntimeException(ex);
         }
         

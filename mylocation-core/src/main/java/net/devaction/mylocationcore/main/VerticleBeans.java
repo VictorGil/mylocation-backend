@@ -1,7 +1,7 @@
 package net.devaction.mylocationcore.main;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle;
 import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
@@ -11,7 +11,7 @@ import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
  * since October 2018
  */
 public class VerticleBeans{
-    private static final Logger log = LogManager.getLogger(VerticleBeans.class);
+    private static final Logger log = LoggerFactory.getLogger(VerticleBeans.class);
 
     private LocationDataServerVerticle locationDataServerVerticle;
     private WebServerVerticle webServerVerticle;
