@@ -42,7 +42,7 @@ public class MyLocationCoreMain implements sun.misc.SignalHandler{
     private void registerThisAsOsSignalHandler(){
         log.info("Going to register this object to handle the " + WINCH_SIGNAL + " signal");
         try{
-            sun.misc.Signal.handle( new sun.misc.Signal(WINCH_SIGNAL), this);
+            Signal.handle(new Signal(WINCH_SIGNAL), this);
         } catch(IllegalArgumentException ex){
             // Most likely this is a signal that's not supported on this
             // platform or with the JVM as it is currently configured
