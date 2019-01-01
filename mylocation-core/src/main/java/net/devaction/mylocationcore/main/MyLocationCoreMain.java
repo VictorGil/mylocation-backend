@@ -85,7 +85,7 @@ public class MyLocationCoreMain implements sun.misc.SignalHandler{
             log.info("Verx is closed. Going to exit.");
             System.exit(0);
         } else{ 
-            log.error("Vert.x did not det closed after waiting 5 seconds. Going to exit anyway");
+            log.error("Vert.x did not get closed after waiting 5 seconds. Going to exit anyway");
             System.exit(1);
         }        
     }
