@@ -18,6 +18,7 @@ public class MyLocationCoreMain implements SignalHandler{
     public  static Vertx vertx;
     private static final String WINCH_SIGNAL = "WINCH";
     private static boolean isVertxClosed = false;  
+    private static final String VERTX_CLUSTER_HOST = "vertx.cluster.host";
     
     public static void main(String[] args){
         new MyLocationCoreMain().run();        
@@ -28,11 +29,16 @@ public class MyLocationCoreMain implements SignalHandler{
     private void run(){
         log.info("Starting application");
         
-        //Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster");        
-        //CustomizedLauncher.executeCommand("run", MainVerticle.class.getName(), "-cluster");
+        final String clusterHost = System.getProperty(VERTX_CLUSTER_HOST);
+        if (clusterHost == null || clusterHost.isEmpty()){
+            log.error("FATAL: Java system property " + VERTX_CLUSTER_HOST + " is not set. Exiting");
+            System.exit(1);
+        }
+        
+        log.info("The Vertx cluster host is: " + clusterHost);
         
         Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster", 
-                "-cluster-host", "localhost");
+                "-cluster-host", clusterHost);
         
         registerThisAsOsSignalHandler();
     }
