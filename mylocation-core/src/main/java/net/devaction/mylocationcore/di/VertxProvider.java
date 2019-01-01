@@ -10,3 +10,4 @@ public interface VertxProvider{
 
     public Vertx provide();
 }
+
