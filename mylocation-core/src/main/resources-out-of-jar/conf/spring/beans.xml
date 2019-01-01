@@ -10,7 +10,7 @@
     <bean id="verticleBeans" class="net.devaction.mylocationcore.main.VerticleBeans">
         <property name="locationDataServerVerticle" ref="locationDataServerVerticle"/>
         <property name="webServerVerticle" ref="webServerVerticle"/>
-        <property name="lastKnownLocationVerticle" ref="lastKnownLocationVerticle"/>
+        <property name="lastKnownLocationLoggerVerticle" ref="lastKnownLocationLoggerVerticle"/>
     </bean>    
     
     <bean id="locationDataServerVerticle" 
@@ -40,7 +40,7 @@
         <property name="decryptedValueProvider" ref="decryptedValueProvider"/>        
     </bean>
 
-    <bean id="lastKnownLocationVerticle" class="net.devaction.mylocationcore.lastkownlocationverticleforfrontend.LastKnownLocationVerticle">
+    <bean id="lastKnownLocationLoggerVerticle" class="net.devaction.mylocationcore.lastkownlocationverticleforfrontend.LastKnownLocationLoggerVerticle">
         <property name="confValueProvider" ref="confValueProvider"/>
     </bean>
         

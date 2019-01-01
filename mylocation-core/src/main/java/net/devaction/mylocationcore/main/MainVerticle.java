@@ -53,7 +53,7 @@ public class MainVerticle extends AbstractVerticle{
                 
                 deployVerticle(verticleBeans.getLocationDataServerVerticle());
                 deployVerticle(verticleBeans.getWebServerVerticle());
-                deployVerticle(verticleBeans.getLastKnownLocationVerticle());
+                deployVerticle(verticleBeans.getLastKnownLocationLoggerVerticle());
             }
         });     
     }

@@ -14,8 +14,8 @@ import net.devaction.mylocationcore.di.ConfValueProvider;
  *
  * since December 2018
  */
-public class LastKnownLocationVerticle extends AbstractVerticle implements InitializingBean{
-    private static final Logger log = LoggerFactory.getLogger(LastKnownLocationVerticle.class);
+public class LastKnownLocationLoggerVerticle extends AbstractVerticle implements InitializingBean{
+    private static final Logger log = LoggerFactory.getLogger(LastKnownLocationLoggerVerticle.class);
 
     private ConfValueProvider confValueProvider;
     
