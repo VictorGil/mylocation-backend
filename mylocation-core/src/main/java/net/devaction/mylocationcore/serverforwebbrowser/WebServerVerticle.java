@@ -96,10 +96,13 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     SockJSHandler createSockJSBridgeHandler(){
         SockJSHandlerOptions handlerOptions = new SockJSHandlerOptions().setHeartbeatInterval(5000);
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx, handlerOptions);
-                
+        
+        //TO DO
         BridgeOptions bridgeOptions = new BridgeOptions()
                 .addOutboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
-                .addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress));
+                .addOutboundPermitted(new PermittedOptions().setAddress("testAddress01"))
+                .addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
+                .addInboundPermitted(new PermittedOptions().setAddress("testAddress01"));
 
         sockJSHandler.bridge(bridgeOptions, event -> {
             if (event.type() == BridgeEventType.SOCKET_CREATED)
