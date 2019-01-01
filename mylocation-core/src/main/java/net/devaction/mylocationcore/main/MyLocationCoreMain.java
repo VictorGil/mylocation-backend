@@ -26,8 +26,14 @@ public class MyLocationCoreMain implements SignalHandler{
     private MyLocationCoreMain(){}
     
     private void run(){
-        log.info("Starting application");        
-        Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster");   
+        log.info("Starting application");
+        
+        //Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster");        
+        //CustomizedLauncher.executeCommand("run", MainVerticle.class.getName(), "-cluster");
+        
+        Launcher.executeCommand("run", MainVerticle.class.getName(), "-cluster", 
+                "-cluster-host", "localhost");
+        
         registerThisAsOsSignalHandler();
     }
     
