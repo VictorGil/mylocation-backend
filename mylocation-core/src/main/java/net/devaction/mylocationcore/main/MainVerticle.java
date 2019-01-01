@@ -70,7 +70,7 @@ public class MainVerticle extends AbstractVerticle{
                 log.info("Successfully deployed " +  
                         verticle.getClass().getSimpleName() + ". Result: " + asyncResult.result());
             } else{
-                log.error("Error when trying to deploy " + verticle.getClass().getSimpleName() +
+                log.error("FATAL: Error when trying to deploy " + verticle.getClass().getSimpleName() +
                         ": " + asyncResult.cause(), asyncResult.cause());
                 vertx.close(closeHandler -> {
                     log.info("vertx has been closed");
