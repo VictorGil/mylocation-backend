@@ -5,15 +5,15 @@ import org.slf4j.LoggerFactory;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Verticle;
 import io.vertx.core.json.JsonObject;
 import net.devaction.mylocationcore.di.ConfValueProviderImpl;
 import net.devaction.mylocationcore.di.VertxProviderImpl;
-import net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle;
-import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * @author Víctor Gil
  * 
@@ -51,43 +51,34 @@ public class MainVerticle extends AbstractVerticle{
                 //this is for the sun.misc.SignalHandler.handle method to be able to shutdown Vert.x
                 MyLocationCoreMain.setVertx(vertx);
                 
-                deployLocationDataServerVerticle(verticleBeans.getLocationDataServerVerticle());
-                deployWebServerVerticle(verticleBeans.getWebServerVerticle());
+                deployVerticle(verticleBeans.getLocationDataServerVerticle());
+                deployVerticle(verticleBeans.getWebServerVerticle());
+                deployVerticle(verticleBeans.getLastKnownLocationVerticle());
             }
         });     
     }
-    
-    public void deployLocationDataServerVerticle(LocationDataServerVerticle locationDataServerVerticle){
-        log.info("Going to deploy " + LocationDataServerVerticle.class.getSimpleName());
-        vertx.deployVerticle(locationDataServerVerticle, asyncResult -> {
+
+    private void deployVerticle(Verticle verticle){
+        if (verticle == null){
+            log.error("The verticle which was supposed to be deployed is null, nothing to do.");
+            return;
+        }
+        
+        log.info("Going to deploy " + verticle.getClass().getSimpleName());
+        vertx.deployVerticle(verticle, asyncResult -> {
             if (asyncResult.succeeded()){
                 log.info("Successfully deployed " +  
-                        LocationDataServerVerticle.class.getSimpleName() + ". Result: " + asyncResult.result());
+                        verticle.getClass().getSimpleName() + ". Result: " + asyncResult.result());
             } else{
-                log.error("Error when trying to deploy " + LocationDataServerVerticle.class.getSimpleName());
+                log.error("Error when trying to deploy " + verticle.getClass().getSimpleName() +
+                        ": " + asyncResult.cause(), asyncResult.cause());
                 vertx.close(closeHandler -> {
                     log.info("vertx has been closed");
                 });
             }
         });    
-    }    
-
-    public void deployWebServerVerticle(WebServerVerticle webServerVerticle){
-        log.info("Going to deploy " + WebServerVerticle.class.getSimpleName());
-        
-        vertx.deployVerticle(webServerVerticle, asyncResult -> {
-            if (asyncResult.succeeded()) {
-                log.info("Successfully deployed " +  
-                        WebServerVerticle.class.getSimpleName() + ". Result: " + asyncResult.result());
-            } else{
-                log.error("Error when trying to deploy " + WebServerVerticle.class.getSimpleName());
-                vertx.close(closeHandler -> {
-                    log.info("vertx has been closed");
-                });
-            }
-        });    
-    } 
-
+    }
+   
     @Override
     public void stop(){
         log.info(this.getClass().getSimpleName() + " verticle has been stopped");
