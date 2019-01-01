@@ -33,13 +33,20 @@ public class AppConfig{
     @JsonProperty("event_bus_multicast_address")
     private String eventBusMulticastAddress;
 
+    @JsonProperty("event_bus_last_known_location_address")
+    private String eventBusLastKnownLocationAddress;
+
+    @JsonProperty("event_bus_location_persist_address")
+    private String eventBusLocationPersistAddress;    
+    
     @Override
     public String toString() {
-        return "AppConfig [locationDataHttpPort=" + locationDataHttpPort + ", locationDataEndPoint="
+        return "core_server_config [locationDataHttpPort=" + locationDataHttpPort + ", locationDataEndPoint="
                 + locationDataEndPoint + ", webServerHttpPort=" + webServerHttpPort + ", webServerKeystoreFile="
                 + webServerKeystoreFile + ", decryptPasswordEnvVarName=" + decryptPasswordEnvVarName
                 + ", keystorePasswordEncrypted=" + keystorePasswordEncrypted + ", eventBusMulticastAddress="
-                + eventBusMulticastAddress + "]";
+                + eventBusMulticastAddress + ", eventBusLastKnownLocationAddress=" + eventBusLastKnownLocationAddress
+                + ", eventBusLocationPersistAddress=" + eventBusLocationPersistAddress + "]";
     }
 
     public int getLocationDataHttpPort() {
@@ -96,6 +103,22 @@ public class AppConfig{
 
     public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
+    }
+
+    public String getEventBusLastKnownLocationAddress() {
+        return eventBusLastKnownLocationAddress;
+    }
+
+    public void setEventBusLastKnownLocationAddress(String eventBusLastKnownLocationAddress) {
+        this.eventBusLastKnownLocationAddress = eventBusLastKnownLocationAddress;
+    }
+
+    public String getEventBusLocationPersistAddress() {
+        return eventBusLocationPersistAddress;
+    }
+
+    public void setEventBusLocationPersistAddress(String eventBusLocationPersistAddress) {
+        this.eventBusLocationPersistAddress = eventBusLocationPersistAddress;
     }   
 }
 
