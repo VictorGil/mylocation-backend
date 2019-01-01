@@ -6,13 +6,14 @@ import org.slf4j.LoggerFactory;
 import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 /**
  * @author Víctor Gil 
  * since June
  */
 @SuppressWarnings("restriction")
-public class MyLocationCoreMain implements sun.misc.SignalHandler{
+public class MyLocationCoreMain implements SignalHandler{
     private static final Logger log = LoggerFactory.getLogger(MyLocationCoreMain.class);
     public  static Vertx vertx;
     private static final String WINCH_SIGNAL = "WINCH";
