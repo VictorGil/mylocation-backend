@@ -12,7 +12,6 @@ import net.devaction.mylocationcore.di.VertxProvider;
 import net.devaction.mylocationcore.sharedenums.Result;
 import net.devaction.mylocationcore.util.LocationDataUtil;
 
-
 /**
  * @author Víctor Gil
  * 

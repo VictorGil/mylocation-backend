@@ -28,7 +28,6 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     
     private String endPoint; 
     private Integer httpPort;    
-    private String eventBusMulticastAddress;
     
     private String keyStorePassword;
     private String keyStoreFile;
@@ -36,15 +35,12 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     private LocationDataWebApiHandler handler;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() throws Exception{
         if (endPoint == null)
             endPoint = confValueProvider.getString("location_data_end_point");
         
         if (httpPort == null)
             httpPort = confValueProvider.getInteger("location_data_http_port");   
-        
-        if (eventBusMulticastAddress == null)
-            eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address"); 
         
         if (keyStorePassword == null){
             String keyStorePasswordEncrypted = confValueProvider.getString("keystore_password_encrypted");
@@ -58,9 +54,6 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     @Override
     public void start(Future<Void> future){        
         log.info("Starting " + LocationDataServerVerticle.class.getSimpleName());
-        
-        //this is just for logging purposes
-        addEventBusMessageConsumer();
         
         Router router = Router.router(vertx);        
 
@@ -80,15 +73,6 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
         createHttpServer(router, future, httpPort);
     }
 
-    //this is just for logging purposes
-    void addEventBusMessageConsumer(){
-        MessageConsumer<String> consumer = vertx.eventBus().consumer(eventBusMulticastAddress);
-        log.info("Going to listen for messages on the event bus, the multicast address is \"" + eventBusMulticastAddress + "\"");
-        consumer.handler(message -> {
-            log.debug("Message received on the event bus:\n" + message.body());
-        });
-    }
-    
     private void createHttpServer(Router router, Future<Void> future, int port){
         // Create the HTTP server and pass the "accept" method to the request handler.
         vertx.createHttpServer(createHttpsOptions())
@@ -137,11 +121,6 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     //it may be useful when testing, it is not called by Spring
     public void setHttpPort(Integer httpPort) {
         this.httpPort = httpPort;
-    }
-
-    //it may be useful when testing, it is not called by Spring
-    public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
-        this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
     
     //it may be useful for testing, it is not called by Spring

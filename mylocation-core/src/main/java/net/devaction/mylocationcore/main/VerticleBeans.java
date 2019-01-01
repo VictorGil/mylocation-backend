@@ -3,6 +3,7 @@ package net.devaction.mylocationcore.main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.devaction.mylocationcore.lastkownlocationverticleforfrontend.LastKnownLocationVerticle;
 import net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle;
 import net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle;
 
@@ -15,7 +16,8 @@ public class VerticleBeans{
 
     private LocationDataServerVerticle locationDataServerVerticle;
     private WebServerVerticle webServerVerticle;
-
+    private LastKnownLocationVerticle lastKnownLocationVerticle; 
+    
     public void setLocationDataServerVerticle(LocationDataServerVerticle locationDataServerVerticle) {
         this.locationDataServerVerticle = locationDataServerVerticle;
     }
@@ -30,6 +32,14 @@ public class VerticleBeans{
     
     public void setWebServerVerticle(WebServerVerticle webServerVerticle) {
         this.webServerVerticle = webServerVerticle;
+    }
+
+    public LastKnownLocationVerticle getLastKnownLocationVerticle() {
+        return lastKnownLocationVerticle;
+    }
+
+    public void setLastKnownLocationVerticle(LastKnownLocationVerticle lastKnownLocationVerticle) {
+        this.lastKnownLocationVerticle = lastKnownLocationVerticle;
     }    
 }
 
