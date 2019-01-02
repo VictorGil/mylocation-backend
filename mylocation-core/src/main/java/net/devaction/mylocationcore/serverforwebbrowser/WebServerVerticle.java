@@ -13,7 +13,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
-import net.devaction.mylocationcore.di.ConfValueProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
 import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
 import java.io.File;
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class WebServerVerticle extends AbstractVerticle implements InitializingBean{
     private static final Logger log = LoggerFactory.getLogger(WebServerVerticle.class);
     
-    private ConfValueProvider confValueProvider; 
+    private ConfigValuesProvider configValuesProvider; 
     private DecryptedValueProvider decryptedValueProvider;
     
     private String keyStorePassword;
@@ -43,18 +43,18 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     @Override
     public void afterPropertiesSet() throws Exception {
         if (keyStorePassword == null){
-            String keyStorePasswordEncrypted = confValueProvider.getString("keystore_password_encrypted");
+            String keyStorePasswordEncrypted = configValuesProvider.getString("keystore_password_encrypted");
             keyStorePassword = decryptedValueProvider.decrypt(keyStorePasswordEncrypted);
         }
                 
         if (keyStoreFile == null)
-            keyStoreFile = confValueProvider.getString("web_server_keystore_file");
+            keyStoreFile = configValuesProvider.getString("web_server_keystore_file");
         
         if (httpPort == null)
-            httpPort = confValueProvider.getInteger("web_server_http_port");
+            httpPort = configValuesProvider.getInteger("web_server_http_port");
         
         if (eventBusMulticastAddress == null)
-            eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address");
+            eventBusMulticastAddress = configValuesProvider.getString("event_bus_multicast_address");
         
         secureOptions.setKeyStoreOptions(new JksOptions().setPath(
                 //this file must be in the classpath
@@ -123,32 +123,32 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     }
 
     //to be called by Spring
-    public void setConfValueProvider(ConfValueProvider confValueProvider) {
-        this.confValueProvider = confValueProvider;
+    public void setConfigValuesProvider(final ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
     
     //to be called by Spring
-    public void setDecryptedValueProvider(DecryptedValueProvider decryptedValueProvider) {
+    public void setDecryptedValueProvider(final DecryptedValueProvider decryptedValueProvider) {
         this.decryptedValueProvider = decryptedValueProvider;
     }
 
     //it may be useful for testing, it is not called by Spring
-    public void setKeyStorePassword(String keyStorePassword) {
+    public void setKeyStorePassword(final String keyStorePassword) {
         this.keyStorePassword = keyStorePassword;
     }
 
     //it may be useful for testing, it is not called by Spring
-    public void setKeyStoreFile(String keyStoreFile) {
+    public void setKeyStoreFile(final String keyStoreFile) {
         this.keyStoreFile = keyStoreFile;
     }
 
     //it may be useful for testing, it is not called by Spring
-    public void setHttpPort(Integer httpPort) {
+    public void setHttpPort(final int httpPort) {
         this.httpPort = httpPort;
     }
 
     //it may be useful for testing, it is not called by Spring
-    public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
+    public void setEventBusMulticastAddress(final String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
 }

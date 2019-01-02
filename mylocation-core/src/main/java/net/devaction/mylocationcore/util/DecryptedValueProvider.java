@@ -7,7 +7,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimplePBEConfig;
 import org.springframework.beans.factory.InitializingBean;
 
-import net.devaction.mylocationcore.di.ConfValueProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
 
 /**
  * @author Víctor Gil
@@ -19,7 +19,7 @@ public class DecryptedValueProvider implements InitializingBean{
     private final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
     
     private String encryptionPassword;
-    private ConfValueProvider confValueProvider;   
+    private ConfigValuesProvider configValuesProvider;   
         
     public String decrypt(String encryptedValue){
         return encryptor.decrypt(encryptedValue);
@@ -28,7 +28,7 @@ public class DecryptedValueProvider implements InitializingBean{
     @Override
     public void afterPropertiesSet() throws Exception {
         if (encryptionPassword == null) {
-            String decryptPasswordEnvVarName = confValueProvider.getString("decrypt_password_env_var_name");
+            String decryptPasswordEnvVarName = configValuesProvider.getString("decrypt_password_env_var_name");
             log.debug("Environment variable to be used to obtain the decryption/encryption password: " + 
                     decryptPasswordEnvVarName);
             
@@ -53,8 +53,8 @@ public class DecryptedValueProvider implements InitializingBean{
     }
 
     //to be called by Spring
-    public void setConfValueProvider(ConfValueProvider confValueProvider) {
-        this.confValueProvider = confValueProvider;
+    public void setConfigValuesProvider(ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
 }
 

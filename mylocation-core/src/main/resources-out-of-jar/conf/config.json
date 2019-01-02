@@ -1,5 +1,5 @@
 {
-    "core_service_config": {
+    "application_configuration": {
         "location_data_http_port": 8091,
         "location_data_end_point": "/api/locationdata",
         "web_server_http_port": 8092,

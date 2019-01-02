@@ -7,7 +7,8 @@ import org.springframework.beans.factory.InitializingBean;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageConsumer;
-import net.devaction.mylocationcore.di.ConfValueProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
+
 
 /**
  * @author Víctor Gil
@@ -17,14 +18,14 @@ import net.devaction.mylocationcore.di.ConfValueProvider;
 public class LastKnownLocationLoggerVerticle extends AbstractVerticle implements InitializingBean{
     private static final Logger log = LoggerFactory.getLogger(LastKnownLocationLoggerVerticle.class);
 
-    private ConfValueProvider confValueProvider;
+    private ConfigValuesProvider configValuesProvider;
     
     private String eventBusMulticastAddress;
     
     @Override
     public void afterPropertiesSet() throws Exception{
         if (eventBusMulticastAddress == null)
-            eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address");        
+            eventBusMulticastAddress = configValuesProvider.getString("event_bus_multicast_address");        
     }
     
     @Override
@@ -55,8 +56,8 @@ public class LastKnownLocationLoggerVerticle extends AbstractVerticle implements
     }
     
     //to be called by Spring
-    public void setConfValueProvider(ConfValueProvider confValueProvider) {
-        this.confValueProvider = confValueProvider;
+    public void setConfigValuesProvider(ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
 }
 

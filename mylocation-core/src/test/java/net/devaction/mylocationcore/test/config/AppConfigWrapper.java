@@ -12,12 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AppConfigWrapper {
     private static final Logger log = LoggerFactory.getLogger(AppConfigWrapper.class);
     
-    @JsonProperty("core_service_config")
+    @JsonProperty("application_configuration")
     private AppConfig appConfig;
 
     @Override
     public String toString() {
-        return "AppConfigWrapper [core_service_config=" + appConfig + "]";
+        return "AppConfigWrapper [application_configuration=" + appConfig + "]";
     }
 
     public AppConfig getAppConfig() {

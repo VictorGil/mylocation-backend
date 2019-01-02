@@ -7,8 +7,8 @@ import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.eventbus.EventBus;
 import net.devaction.mylocation.api.data.LocationData;
-import net.devaction.mylocationcore.di.ConfValueProvider;
-import net.devaction.mylocationcore.di.VertxProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.VertxProvider;
 import net.devaction.mylocationcore.sharedenums.Result;
 import net.devaction.mylocationcore.util.LocationDataUtil;
 
@@ -24,7 +24,7 @@ public class LocationDataProcessor implements InitializingBean{
     private VertxProvider vertxProvider;
     
     private String eventBusMulticastAddress; 
-    private ConfValueProvider confValueProvider;
+    private ConfigValuesProvider configValuesProvider;
     
     public LocationDataProcessingResult process(LocationData locationData){       
         log.debug("Going to process LocationData: " + locationData);
@@ -42,7 +42,7 @@ public class LocationDataProcessor implements InitializingBean{
         if (eventBus == null)
             eventBus = vertxProvider.provide().eventBus();
         if (eventBusMulticastAddress == null)
-            eventBusMulticastAddress = confValueProvider.getString("event_bus_multicast_address"); 
+            eventBusMulticastAddress = configValuesProvider.getString("event_bus_multicast_address"); 
     }
 
     public void setEventBus(EventBus eventBus) {
@@ -57,8 +57,8 @@ public class LocationDataProcessor implements InitializingBean{
         this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
 
-    public void setConfValueProvider(ConfValueProvider confValueProvider) {
-        this.confValueProvider = confValueProvider;
+    public void setConfigValuesProvider(final ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
 }
 

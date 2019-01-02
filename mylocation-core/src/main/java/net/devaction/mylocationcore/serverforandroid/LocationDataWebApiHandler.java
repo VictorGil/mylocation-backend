@@ -6,7 +6,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import net.devaction.mylocationcore.di.VertxProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.VertxProvider;
 import net.devaction.mylocationcore.processors.LocationDataHandler;
 import net.devaction.mylocationcore.processors.LocationDataProcessor;
 import net.devaction.mylocationcore.processors.LocationDataResultHandler;

@@ -12,7 +12,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import net.devaction.mylocationcore.di.ConfValueProvider;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
 import net.devaction.mylocationcore.util.DecryptedValueProvider;
 
 /**
@@ -23,7 +23,7 @@ import net.devaction.mylocationcore.util.DecryptedValueProvider;
 public class LocationDataServerVerticle extends AbstractVerticle implements InitializingBean{
     private static final Logger log = LoggerFactory.getLogger(LocationDataServerVerticle.class);
  
-    private ConfValueProvider confValueProvider;    
+    private ConfigValuesProvider configValuesProvider;    
     private DecryptedValueProvider decryptedValueProvider;
     
     private String endPoint; 
@@ -37,18 +37,18 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     @Override
     public void afterPropertiesSet() throws Exception{
         if (endPoint == null)
-            endPoint = confValueProvider.getString("location_data_end_point");
+            endPoint = configValuesProvider.getString("location_data_end_point");
         
         if (httpPort == null)
-            httpPort = confValueProvider.getInteger("location_data_http_port");   
+            httpPort = configValuesProvider.getInteger("location_data_http_port");   
         
         if (keyStorePassword == null){
-            String keyStorePasswordEncrypted = confValueProvider.getString("keystore_password_encrypted");
+            String keyStorePasswordEncrypted = configValuesProvider.getString("keystore_password_encrypted");
             keyStorePassword = decryptedValueProvider.decrypt(keyStorePasswordEncrypted);
         }
                 
         if (keyStoreFile == null)
-            keyStoreFile = confValueProvider.getString("web_server_keystore_file");
+            keyStoreFile = configValuesProvider.getString("web_server_keystore_file");
     }
     
     @Override
@@ -104,8 +104,8 @@ public class LocationDataServerVerticle extends AbstractVerticle implements Init
     }
 
     //to be called by Spring
-    public void setConfValueProvider(ConfValueProvider confValueProvider) {
-        this.confValueProvider = confValueProvider;
+    public void setConfigValuesProvider(ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
     
     //to be called by Spring    

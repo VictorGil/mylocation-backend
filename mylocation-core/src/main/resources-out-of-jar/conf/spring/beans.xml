@@ -5,17 +5,22 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd">
+    http://www.springframework.org/schema/context/spring-context.xsd"
+    xmlns:util="http://www.springframework.org/schema/util">
 
-    <bean id="verticleBeans" class="net.devaction.mylocationcore.main.VerticleBeans">
-        <property name="locationDataServerVerticle" ref="locationDataServerVerticle"/>
-        <property name="webServerVerticle" ref="webServerVerticle"/>
-        <property name="lastKnownLocationLoggerVerticle" ref="lastKnownLocationLoggerVerticle"/>
+    <bean id="verticlesBean" class="net.devaction.mylocation.vertxutilityextensions.main.VerticlesBean">
+        <property name="verticles">
+            <list value-type="io.vertx.core.Verticle">
+                <ref bean="locationDataServerVerticle"/>
+                <ref bean="webServerVerticle"/>
+                <ref bean="lastKnownLocationLoggerVerticle"/>
+            </list>
+        </property>
     </bean>    
     
     <bean id="locationDataServerVerticle" 
             class="net.devaction.mylocationcore.serverforandroid.LocationDataServerVerticle">
-        <property name="confValueProvider" ref="confValueProvider"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
         <property name="handler" ref="locationDataWebApiHandler"/>
         <property name="decryptedValueProvider" ref="decryptedValueProvider"/>   
     </bean>
@@ -28,26 +33,26 @@
     
     <bean id="processor" class="net.devaction.mylocationcore.processors.LocationDataProcessor">
         <property name="vertxProvider" ref="vertxProvider"/>
-        <property name="confValueProvider" ref="confValueProvider"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
     </bean>
     
     <bean id="resultHandler" class="net.devaction.mylocationcore.processors.LocationDataResultHandler"/>
     
-    <bean id="vertxProvider" class="net.devaction.mylocationcore.di.VertxProviderImpl"/>
+    <bean id="vertxProvider" class="net.devaction.mylocation.vertxutilityextensions.config.VertxProviderImpl"/>
     
     <bean id="webServerVerticle" class="net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle">
-        <property name="confValueProvider" ref="confValueProvider"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
         <property name="decryptedValueProvider" ref="decryptedValueProvider"/>        
     </bean>
 
     <bean id="lastKnownLocationLoggerVerticle" class="net.devaction.mylocationcore.lastkownlocationverticleforfrontend.LastKnownLocationLoggerVerticle">
-        <property name="confValueProvider" ref="confValueProvider"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
     </bean>
         
     <bean id="decryptedValueProvider" class="net.devaction.mylocationcore.util.DecryptedValueProvider">
-        <property name="confValueProvider" ref="confValueProvider"/>   
+        <property name="configValuesProvider" ref="configValuesProvider"/>   
     </bean>  
     
-    <bean id="confValueProvider" class="net.devaction.mylocationcore.di.ConfValueProviderImpl"/>
+    <bean id="configValuesProvider" class="net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProviderImpl"/>
 </beans>
 

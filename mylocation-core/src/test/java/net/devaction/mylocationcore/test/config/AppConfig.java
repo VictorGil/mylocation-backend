@@ -41,7 +41,7 @@ public class AppConfig{
     
     @Override
     public String toString() {
-        return "core_server_config [locationDataHttpPort=" + locationDataHttpPort + ", locationDataEndPoint="
+        return "application_configuration [locationDataHttpPort=" + locationDataHttpPort + ", locationDataEndPoint="
                 + locationDataEndPoint + ", webServerHttpPort=" + webServerHttpPort + ", webServerKeystoreFile="
                 + webServerKeystoreFile + ", decryptPasswordEnvVarName=" + decryptPasswordEnvVarName
                 + ", keystorePasswordEncrypted=" + keystorePasswordEncrypted + ", eventBusMulticastAddress="
