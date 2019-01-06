@@ -27,17 +27,12 @@
     
     <bean id="locationDataWebApiHandler" class="net.devaction.mylocationcore.serverforandroid.LocationDataWebApiHandler">
         <property name="vertxProvider" ref="vertxProvider"/>
-        <property name="processor" ref="processor"/>
-        <property name="resultHandler" ref="resultHandler"/>
-    </bean>
-    
-    <bean id="processor" class="net.devaction.mylocationcore.processors.LocationDataProcessor">
-        <property name="vertxProvider" ref="vertxProvider"/>
         <property name="configValuesProvider" ref="configValuesProvider"/>
+        <property name= "locationPersistenceRequestProvider" ref="locationPersistenceRequestProvider"/>
     </bean>
     
-    <bean id="resultHandler" class="net.devaction.mylocationcore.processors.LocationDataResultHandler"/>
-    
+    <bean id="locationPersistenceRequestProvider" class="net.devaction.mylocationcore.persistence.LocationPersistenceRequestProvider"/>  
+       
     <bean id="vertxProvider" class="net.devaction.mylocation.vertxutilityextensions.config.VertxProviderImpl"/>
     
     <bean id="webServerVerticle" class="net.devaction.mylocationcore.serverforwebbrowser.WebServerVerticle">

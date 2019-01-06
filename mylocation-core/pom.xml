@@ -21,11 +21,18 @@
 
     <dependencies>
         <dependency>
+            <!-- This API contains POJOs -->
             <groupId>net.devaction.mylocation</groupId>
             <artifactId>mylocation-api</artifactId>
             <!-- we need to use Java 7 for the API because of Android -->
             <classifier>java7</classifier>
             <version>1.0.0.0</version>
+        </dependency>
+        <dependency>
+            <!-- This API contains protobuffer objects -->
+            <groupId>net.devaction.mylocation</groupId>
+            <artifactId>last_known_location-persistence-api</artifactId>
+            <version>1.0.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

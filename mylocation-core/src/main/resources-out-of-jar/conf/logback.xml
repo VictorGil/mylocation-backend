@@ -7,11 +7,11 @@
         </encoder>
     </appender>
 
-    <logger name="net.devaction" level="debug" additivity="false">
+    <logger name="net.devaction" level="trace" additivity="false">
         <appender-ref ref="console" />
     </logger>
 
-    <logger name="com.hazelcast" level="warn" additivity="false">
+    <logger name="com.hazelcast" level="info" additivity="false">
         <appender-ref ref="console" />
     </logger>
         

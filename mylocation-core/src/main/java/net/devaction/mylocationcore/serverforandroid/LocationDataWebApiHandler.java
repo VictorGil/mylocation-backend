@@ -4,12 +4,16 @@ import org.springframework.beans.factory.InitializingBean;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import net.devaction.mylocation.api.data.LocationData;
+import net.devaction.mylocation.locationpersistenceapi.protobuf.LocationPersistenceRequest;
+import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
 import net.devaction.mylocation.vertxutilityextensions.config.VertxProvider;
-import net.devaction.mylocationcore.processors.LocationDataHandler;
-import net.devaction.mylocationcore.processors.LocationDataProcessor;
-import net.devaction.mylocationcore.processors.LocationDataResultHandler;
+import net.devaction.mylocationcore.persistence.LocationPersistenceRequestProvider;
+import net.devaction.mylocationcore.persistence.ResponseFromServerHandler;
+import net.devaction.mylocationcore.util.LocationDataUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +30,23 @@ public class LocationDataWebApiHandler implements Handler<RoutingContext>, Initi
     private Vertx vertx;
     private VertxProvider vertxProvider;
     
-    private LocationDataProcessor processor;
-    private LocationDataResultHandler resultHandler;
-
+    private String eventBusMulticastAddress; 
+    private ConfigValuesProvider configValuesProvider;
+    
+    private LocationPersistenceRequestProvider locationPersistenceRequestProvider;
+    private String locationPersistAddress;
+    
     @Override
     public void afterPropertiesSet() throws Exception {
         if (vertx == null)
-            vertx = vertxProvider.provide();        
-    }
+            vertx = vertxProvider.provide();
+
+        if (eventBusMulticastAddress == null)
+            eventBusMulticastAddress = configValuesProvider.getString("event_bus_multicast_address");
+        
+        if (locationPersistAddress == null)
+            locationPersistAddress = configValuesProvider.getString("event_bus_location_persist_address");
+    }        
     
     @Override
     public void handle(RoutingContext routingContext) {
@@ -41,15 +54,20 @@ public class LocationDataWebApiHandler implements Handler<RoutingContext>, Initi
         JsonObject locationDataJsonObject = routingContext.getBodyAsJson();
         log.trace("Body of the http request received as JSON object: " + locationDataJsonObject);
         
-        routingContext.response().setStatusCode(HTTP_OK_200).end();   
+        routingContext.response().setStatusCode(HTTP_OK_200).end();
         
-        //we do not use Spring to inject this handler, to be on the safe side, 
-        //we create a new instance instead because the 
-        //locationDataJsonObject whose value is not constant
-        LocationDataHandler handler = new LocationDataHandler(locationDataJsonObject, processor);
+        //TO DO?: maybe we could check that the JsonObject is as expected before publishing it
+        vertx.eventBus().publish(eventBusMulticastAddress, locationDataJsonObject);
         
-        final boolean notOrdered = false;
-        vertx.executeBlocking(handler, notOrdered, resultHandler);        
+        LocationData locationData = LocationDataUtil.constructObject(locationDataJsonObject);
+        LocationPersistenceRequest persistenceRequest = locationPersistenceRequestProvider.provide(locationData);
+        
+        Buffer buffer = Buffer.buffer(); 
+        buffer.appendBytes(persistenceRequest.toByteArray());
+        
+        log.trace("Going to send a " + persistenceRequest.getClass().getSimpleName() +  " message to " 
+                + locationPersistAddress + " address.");
+        vertx.eventBus().send(locationPersistAddress, buffer, new ResponseFromServerHandler());             
     }
     
     //it may be useful when testing
@@ -60,13 +78,19 @@ public class LocationDataWebApiHandler implements Handler<RoutingContext>, Initi
     public void setVertxProvider(VertxProvider vertxProvider) {
         this.vertxProvider = vertxProvider;
     }
-    
-    public void setResultHandler(LocationDataResultHandler resultHandler) {
-        this.resultHandler = resultHandler;
+
+    public void setConfigValuesProvider(ConfigValuesProvider configValuesProvider) {
+        this.configValuesProvider = configValuesProvider;
     }
 
-    public void setProcessor(LocationDataProcessor processor) {
-        this.processor = processor;
+    public void setLocationPersistenceRequestProvider(
+            LocationPersistenceRequestProvider locationPersistenceRequestProvider) {
+        this.locationPersistenceRequestProvider = locationPersistenceRequestProvider;
+    }
+
+    //to be used just when unit testing
+    public void setEventBusMulticastAddress(String eventBusMulticastAddress) {
+        this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
 }
 

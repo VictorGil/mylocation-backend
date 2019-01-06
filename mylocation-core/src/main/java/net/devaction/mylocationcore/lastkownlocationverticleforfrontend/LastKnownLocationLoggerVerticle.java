@@ -7,8 +7,8 @@ import org.springframework.beans.factory.InitializingBean;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.json.JsonObject;
 import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvider;
-
 
 /**
  * @author Víctor Gil
@@ -38,10 +38,11 @@ public class LastKnownLocationLoggerVerticle extends AbstractVerticle implements
     
     //this is just for logging purposes
     void addEventBusMulticastAddressConsumer(){
-        MessageConsumer<String> consumer = vertx.eventBus().consumer(eventBusMulticastAddress);
+        MessageConsumer<JsonObject> consumer = vertx.eventBus().consumer(eventBusMulticastAddress);
         log.info("Going to listen for messages on the event bus, the address is \"" + eventBusMulticastAddress + "\"");
         consumer.handler(message -> {
-            log.debug("Message received on the " + eventBusMulticastAddress + " event bus address:\n" + message.body());
+            log.debug(JsonObject.class.getSimpleName() + " message received on the " + eventBusMulticastAddress 
+                    + " event bus address:\n" + message.body());
         });
     }
     
