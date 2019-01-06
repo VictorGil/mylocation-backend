@@ -1,4 +1,4 @@
-package net.devaction.mylocationcore.lastkownlocationverticleforfrontend;
+package net.devaction.mylocationcore.livelocationlogger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +15,8 @@ import net.devaction.mylocation.vertxutilityextensions.config.ConfigValuesProvid
  *
  * since December 2018
  */
-public class LastKnownLocationLoggerVerticle extends AbstractVerticle implements InitializingBean{
-    private static final Logger log = LoggerFactory.getLogger(LastKnownLocationLoggerVerticle.class);
+public class LiveLocationLoggerVerticle extends AbstractVerticle implements InitializingBean{
+    private static final Logger log = LoggerFactory.getLogger(LiveLocationLoggerVerticle.class);
 
     private ConfigValuesProvider configValuesProvider;
     

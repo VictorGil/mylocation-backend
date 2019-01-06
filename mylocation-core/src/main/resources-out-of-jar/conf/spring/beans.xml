@@ -13,7 +13,7 @@
             <list value-type="io.vertx.core.Verticle">
                 <ref bean="locationDataServerVerticle"/>
                 <ref bean="webServerVerticle"/>
-                <ref bean="lastKnownLocationLoggerVerticle"/>
+                <ref bean="liveLocationLoggerVerticle"/>
             </list>
         </property>
     </bean>    
@@ -40,7 +40,7 @@
         <property name="decryptedValueProvider" ref="decryptedValueProvider"/>        
     </bean>
 
-    <bean id="lastKnownLocationLoggerVerticle" class="net.devaction.mylocationcore.lastkownlocationverticleforfrontend.LastKnownLocationLoggerVerticle">
+    <bean id="liveLocationLoggerVerticle" class="net.devaction.mylocationcore.livelocationlogger.LiveLocationLoggerVerticle">
         <property name="configValuesProvider" ref="configValuesProvider"/>
     </bean>
         
