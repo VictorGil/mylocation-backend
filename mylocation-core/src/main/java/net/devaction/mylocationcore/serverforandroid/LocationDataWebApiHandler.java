@@ -43,12 +43,12 @@ public class LocationDataWebApiHandler implements Handler<RoutingContext>, Initi
         
         routingContext.response().setStatusCode(HTTP_OK_200).end();   
         
-        //we cannot use Spring to inject this handler, we need to create a new instance because of the 
+        //we do not use Spring to inject this handler, to be on the safe side, 
+        //we create a new instance instead because the 
         //locationDataJsonObject whose value is not constant
         LocationDataHandler handler = new LocationDataHandler(locationDataJsonObject, processor);
         
         final boolean notOrdered = false;
-        //LocationDataResultHandler resultHandler = new LocationDataResultHandler();
         vertx.executeBlocking(handler, notOrdered, resultHandler);        
     }
     
