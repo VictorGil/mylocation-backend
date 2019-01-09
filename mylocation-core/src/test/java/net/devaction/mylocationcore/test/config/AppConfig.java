@@ -33,6 +33,9 @@ public class AppConfig{
     @JsonProperty("event_bus_multicast_address")
     private String eventBusMulticastAddress;
 
+    @JsonProperty("event_bus_last_known_location_address_frontend")
+    private String eventBusLastKnownLocationAddressFrontend;
+    
     @JsonProperty("event_bus_last_known_location_address")
     private String eventBusLastKnownLocationAddress;
 
@@ -45,8 +48,10 @@ public class AppConfig{
                 + locationDataEndPoint + ", webServerHttpPort=" + webServerHttpPort + ", webServerKeystoreFile="
                 + webServerKeystoreFile + ", decryptPasswordEnvVarName=" + decryptPasswordEnvVarName
                 + ", keystorePasswordEncrypted=" + keystorePasswordEncrypted + ", eventBusMulticastAddress="
-                + eventBusMulticastAddress + ", eventBusLastKnownLocationAddress=" + eventBusLastKnownLocationAddress
-                + ", eventBusLocationPersistAddress=" + eventBusLocationPersistAddress + "]";
+                + eventBusMulticastAddress + ", eventBusLastKnownLocationAddressFrontend="
+                + eventBusLastKnownLocationAddressFrontend + ", eventBusLastKnownLocationAddress="
+                + eventBusLastKnownLocationAddress + ", eventBusLocationPersistAddress="
+                + eventBusLocationPersistAddress + "]";
     }
 
     public int getLocationDataHttpPort() {
@@ -119,6 +124,14 @@ public class AppConfig{
 
     public void setEventBusLocationPersistAddress(String eventBusLocationPersistAddress) {
         this.eventBusLocationPersistAddress = eventBusLocationPersistAddress;
+    }
+
+    public String getEventBusLastKnownLocationAddressFrontend() {
+        return eventBusLastKnownLocationAddressFrontend;
+    }
+
+    public void setEventBusLastKnownLocationAddressFrontend(String eventBusLastKnownLocationAddressFrontend) {
+        this.eventBusLastKnownLocationAddressFrontend = eventBusLastKnownLocationAddressFrontend;
     }   
 }
 

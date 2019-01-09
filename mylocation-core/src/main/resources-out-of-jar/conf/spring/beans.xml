@@ -14,6 +14,7 @@
                 <ref bean="locationDataServerVerticle"/>
                 <ref bean="webServerVerticle"/>
                 <ref bean="liveLocationLoggerVerticle"/>
+                <ref bean="lastKnownLocationServerVerticleForFrontend"/>
             </list>
         </property>
     </bean>    
@@ -30,6 +31,30 @@
         <property name="configValuesProvider" ref="configValuesProvider"/>
         <property name= "locationPersistenceRequestProvider" ref="locationPersistenceRequestProvider"/>
     </bean>
+
+    <bean id="lastKnownLocationServerVerticleForFrontend"
+        class="net.devaction.mylocationcore.lastknownlocationserverforfrontend.LastKnownLocationServerVerticleForFrontend">
+        <property name="handler" ref="lastKnownLocationForFrontendHandler"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
+    </bean>
+    
+    <bean id="lastKnownLocationForFrontendHandler" 
+        class="net.devaction.mylocationcore.lastknownlocationserverforfrontend.LastKnownLocationForFrontendHandler">
+        <property name="requestProvider" ref="lastKnownLocationRequestProvider"/>
+        <property name="configValuesProvider" ref="configValuesProvider"/>
+        <property name="vertxProvider" ref="vertxProvider"/>
+    </bean>
+
+    <bean id="lastKnownLocationRequestProvider" 
+        class="net.devaction.mylocationcore.lastknownlocationserverforfrontend.LastKnownLocationRequestProvider"/>
+    
+    <!--bean id="responseFromLastKnownLocationServerHandler"
+        class="net.devaction.mylocationcore.lastknownlocationserverforfrontend.ResponseFromLastKnownLocationServerHandler">
+        <property name="jsonResponseProvider" ref="lastKnownLocationJsonResponseProvider"/>
+    </bean>
+    
+    <bean id="lastKnownLocationJsonResponseProvider" 
+        class="net.devaction.mylocationcore.lastknownlocationserverforfrontend.LastKnownLocationJsonResponseProvider"/-->
     
     <bean id="locationPersistenceRequestProvider" class="net.devaction.mylocationcore.persistence.LocationPersistenceRequestProvider"/>  
        
