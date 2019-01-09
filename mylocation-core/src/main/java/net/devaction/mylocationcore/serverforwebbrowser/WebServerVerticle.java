@@ -38,6 +38,9 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     private Integer httpPort;
     private String eventBusMulticastAddress;
     
+    //TO DO
+    private String eventBusLastKnownLocationAddressFrontend;
+    
     private final HttpServerOptions secureOptions = new HttpServerOptions();
 
     @Override
@@ -100,9 +103,9 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         //TO DO
         BridgeOptions bridgeOptions = new BridgeOptions()
                 .addOutboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
-                .addOutboundPermitted(new PermittedOptions().setAddress("testAddress01"))
-                .addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
-                .addInboundPermitted(new PermittedOptions().setAddress("testAddress01"));
+                //.addOutboundPermitted(new PermittedOptions().setAddress("last_known_location_request_frontend"))
+                //.addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
+                .addInboundPermitted(new PermittedOptions().setAddress("last_known_location_request_frontend"));
 
         sockJSHandler.bridge(bridgeOptions, event -> {
             if (event.type() == BridgeEventType.SOCKET_CREATED)
