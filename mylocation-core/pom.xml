@@ -4,7 +4,7 @@
 
     <groupId>net.devaction.mylocation</groupId>
     <artifactId>mylocation-core</artifactId>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
     <packaging>jar</packaging>
 
     <url>http://devaction.net</url>
@@ -33,13 +33,13 @@
             <!-- This API contains protobuffer objects -->
             <groupId>net.devaction.mylocation</groupId>
             <artifactId>last_known_location-api</artifactId>
-            <version>1.0.0.0-SNAPSHOT</version>
+            <version>1.0.0.0</version>
         </dependency>
         <dependency>
             <!-- This API contains protobuffer objects -->
             <groupId>net.devaction.mylocation</groupId>
             <artifactId>last_known_location-persistence-api</artifactId>
-            <version>1.0.0.0-SNAPSHOT</version>
+            <version>1.0.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>net.devaction</groupId>
             <artifactId>vertx-utility-extensions</artifactId>
-            <version>1.0.0.0-SNAPSHOT</version>
+            <version>1.0.0.0</version>
         </dependency> 
         <dependency>
             <groupId>org.jasypt</groupId>
