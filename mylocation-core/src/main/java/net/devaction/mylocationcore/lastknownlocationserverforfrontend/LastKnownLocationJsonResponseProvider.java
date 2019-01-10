@@ -5,9 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import io.vertx.core.json.JsonObject;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
-
 import net.devaction.mylocation.lastknownlocationapi.protobuf.LastKnownLocationResponse;
 
 /**
@@ -19,16 +16,28 @@ public class LastKnownLocationJsonResponseProvider{
     private static final Logger log = LoggerFactory.getLogger(LastKnownLocationJsonResponseProvider.class);
     
     public JsonObject provide(LastKnownLocationResponse protoResponse){
-        String jsonString = null;        
-        try{            
-            jsonString = JsonFormat.printer().print(protoResponse);
-        } catch(InvalidProtocolBufferException ex){
-            log.error(ex.toString(), ex);
-            return null;
-        }
+        JsonObject jsonObject = new JsonObject();
+                
+        if (protoResponse.hasLatitude())
+            jsonObject.put("latitude", protoResponse.getLatitude());
         
-        //TO DO: The type of all the properties in this JsonObject is String, I do not like that
-        JsonObject jsonObject = new JsonObject(jsonString);
+        if (protoResponse.hasLongitude())
+            jsonObject.put("longitude", protoResponse.getLongitude());
+        
+        if (protoResponse.hasHorizontalAccuracy())
+            jsonObject.put("horizontalAccuracy", protoResponse.getHorizontalAccuracy());
+        
+        if (protoResponse.hasAltitude())
+            jsonObject.put("altitude", protoResponse.getAltitude());
+        
+        if (protoResponse.hasVerticalAccuracy())
+            jsonObject.put("verticalAccuracy", protoResponse.getVerticalAccuracy());
+        
+        if (protoResponse.hasTimeChecked() && protoResponse.getTimeChecked() > 0)
+            jsonObject.put("timeChecked", protoResponse.getTimeChecked());
+        
+        if (protoResponse.hasTimeMeasured() && protoResponse.getTimeMeasured() > 0)
+            jsonObject.put("timeMeasured", protoResponse.getTimeMeasured());
         
         return jsonObject;
     }

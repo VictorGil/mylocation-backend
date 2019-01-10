@@ -37,8 +37,6 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     private String keyStoreFile;
     private Integer httpPort;
     private String eventBusMulticastAddress;
-    
-    //TO DO
     private String eventBusLastKnownLocationAddressFrontend;
     
     private final HttpServerOptions secureOptions = new HttpServerOptions();
@@ -58,6 +56,10 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         
         if (eventBusMulticastAddress == null)
             eventBusMulticastAddress = configValuesProvider.getString("event_bus_multicast_address");
+        
+        if (eventBusLastKnownLocationAddressFrontend == null)
+            eventBusLastKnownLocationAddressFrontend = configValuesProvider
+                .getString("event_bus_last_known_location_address_frontend");
         
         secureOptions.setKeyStoreOptions(new JksOptions().setPath(
                 //this file must be in the classpath
@@ -99,13 +101,10 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     SockJSHandler createSockJSBridgeHandler(){
         SockJSHandlerOptions handlerOptions = new SockJSHandlerOptions().setHeartbeatInterval(5000);
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx, handlerOptions);
-        
-        //TO DO
+
         BridgeOptions bridgeOptions = new BridgeOptions()
                 .addOutboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
-                //.addOutboundPermitted(new PermittedOptions().setAddress("last_known_location_request_frontend"))
-                //.addInboundPermitted(new PermittedOptions().setAddress(eventBusMulticastAddress))
-                .addInboundPermitted(new PermittedOptions().setAddress("last_known_location_request_frontend"));
+                .addInboundPermitted(new PermittedOptions().setAddress(eventBusLastKnownLocationAddressFrontend));
 
         sockJSHandler.bridge(bridgeOptions, event -> {
             if (event.type() == BridgeEventType.SOCKET_CREATED)
@@ -153,6 +152,10 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     //it may be useful for testing, it is not called by Spring
     public void setEventBusMulticastAddress(final String eventBusMulticastAddress) {
         this.eventBusMulticastAddress = eventBusMulticastAddress;
+    }
+
+    public void setEventBusLastKnownLocationAddressFrontend(String eventBusLastKnownLocationAddressFrontend) {
+        this.eventBusLastKnownLocationAddressFrontend = eventBusLastKnownLocationAddressFrontend;
     }
 }
 
