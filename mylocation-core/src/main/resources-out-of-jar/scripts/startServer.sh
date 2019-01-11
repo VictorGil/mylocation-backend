@@ -4,7 +4,7 @@ set -e
 
 BASE_DIR=`dirname "$0"`
 CLASS_NAME="net.devaction.mylocation.vertxutilityextensions.main.VertxStarter"
-CLASSPATH="${BASE_DIR}/../conf:${BASE_DIR}/../conf/lcl:${BASE_DIR}/../lib/*"
+CLASSPATH="${BASE_DIR}/../conf:${BASE_DIR}/../conf/lcl:${BASE_DIR}/..:${BASE_DIR}/../lib/*"
 
 JAVA_SYSTEM_PROPERTIES="-Dhazelcast.logging.type=slf4j -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory -Djava.net.preferIPv4Stack=true -Dvertx.cluster.host=localhost -Dmylocation.service.id=core"
 
