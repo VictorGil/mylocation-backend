@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 
 import net.devaction.mylocation.lastknownlocationapi.protobuf.LastKnownLocationResponse;
+import net.devaction.mylocation.lastknownlocationapi.protobuf.Status;
 
 /**
  * @author Víctor Gil
@@ -15,9 +16,18 @@ import net.devaction.mylocation.lastknownlocationapi.protobuf.LastKnownLocationR
 public class LastKnownLocationJsonResponseProvider{
     private static final Logger log = LoggerFactory.getLogger(LastKnownLocationJsonResponseProvider.class);
     
-    public JsonObject provide(LastKnownLocationResponse protoResponse){
+    public JsonObject provide(LastKnownLocationResponse protoResponse){        
+        if (protoResponse.hasStatus()){
+            Status status = protoResponse.getStatus();
+            if (status == Status.FAILURE){
+                log.error("The request to the last known location server failed: " + 
+                    protoResponse.getErrorMessage() + ".\nNot going to send anything to the frontend");
+                return null;
+            }                
+        }
+        
         JsonObject jsonObject = new JsonObject();
-                
+        
         if (protoResponse.hasLatitude())
             jsonObject.put("latitude", protoResponse.getLatitude());
         

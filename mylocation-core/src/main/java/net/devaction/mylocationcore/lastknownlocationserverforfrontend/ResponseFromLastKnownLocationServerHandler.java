@@ -48,7 +48,8 @@ public class ResponseFromLastKnownLocationServerHandler implements Handler<Async
             }
             
             JsonObject finalResponse = jsonResponseProvider.provide(protoResponse);
-            originalRequest.reply(finalResponse);            
+            if (finalResponse != null)
+                originalRequest.reply(finalResponse);            
         } else{
             Throwable throwable = asyncResult.cause();
             log.error("The (protobuf) " + LastKnownLocationRequest.class.getSimpleName()  + 
