@@ -36,6 +36,8 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
     private String keyStorePassword;
     private String keyStoreFile;
     private Integer httpPort;
+    private Boolean httpsEnabled; 
+    
     private String eventBusMulticastAddress;
     private String eventBusLastKnownLocationAddressFrontend;
     
@@ -47,9 +49,6 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
             String keyStorePasswordEncrypted = configValuesProvider.getString("keystore_password_encrypted");
             keyStorePassword = decryptedValueProvider.decrypt(keyStorePasswordEncrypted);
         }
-                
-        if (keyStoreFile == null)
-            keyStoreFile = configValuesProvider.getString("web_server_keystore_file");
         
         if (httpPort == null)
             httpPort = configValuesProvider.getInteger("web_server_http_port");
@@ -61,10 +60,18 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
             eventBusLastKnownLocationAddressFrontend = configValuesProvider
                 .getString("event_bus_last_known_location_address_frontend");
         
-        secureOptions.setKeyStoreOptions(new JksOptions().setPath(
-                //this file must be in the classpath
-                keyStoreFile)
-                .setPassword(keyStorePassword)).setSsl(true);
+        if (httpsEnabled == null)
+            httpsEnabled = configValuesProvider.getBoolean("web_server_https_enabled");
+        
+        if (httpsEnabled == true){
+            if (keyStoreFile == null)
+                keyStoreFile = configValuesProvider.getString("web_server_keystore_file");
+            
+            secureOptions.setKeyStoreOptions(new JksOptions().setPath(
+                    //this file must be in the classpath
+                    keyStoreFile).setPassword(keyStorePassword)).setSsl(true);
+        } else
+            secureOptions.setSsl(false);
     }
     
     @Override
@@ -154,8 +161,14 @@ public class WebServerVerticle extends AbstractVerticle implements InitializingB
         this.eventBusMulticastAddress = eventBusMulticastAddress;
     }
 
+    //it may be useful for testing, it is not called by Spring
     public void setEventBusLastKnownLocationAddressFrontend(String eventBusLastKnownLocationAddressFrontend) {
         this.eventBusLastKnownLocationAddressFrontend = eventBusLastKnownLocationAddressFrontend;
+    }
+
+    //it may be useful for testing, it is not called by Spring
+    public void setHttpsEnabled(Boolean httpsEnabled) {
+        this.httpsEnabled = httpsEnabled;
     }
 }
 
